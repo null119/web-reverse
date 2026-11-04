@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 2,
+  "sourcePlan": ".optimization-evidence/round-1/04-final-plan.md",
+  "sourcePlanSha256": "bec5e43c1fe9d43d90c76714c40b64cf16a5dc4e6595fcf136fbc3ef28d60d13",
+  "titleFormat": "ATX H2",
+  "topLevelSectionCount": 11,
+  "sections": [
+    { "ordinal": 1, "title": "任务概览" },
+    { "ordinal": 2, "title": "分析与路线决策" },
+    { "ordinal": 3, "title": "实现路径" },
+    { "ordinal": 4, "title": "任务难点" },
+    { "ordinal": 5, "title": "任务坑点" },
+    { "ordinal": 6, "title": "外部约束与检查记录" },
+    { "ordinal": 7, "title": "关键曲折与试错记录" },
+    { "ordinal": 8, "title": "核心逻辑与实现方案" },
+    { "ordinal": 9, "title": "资产沉淀与方法论升级" },
+    { "ordinal": 10, "title": "成果及使用示例" },
+    { "ordinal": 11, "title": "其它" }
+  ],
+  "rules": {
+    "codeFenceHeadingsIgnored": true,
+    "htmlCommentHeadingsIgnored": true,
+    "h3Allowed": true,
+    "crlfAccepted": true,
+    "nonEmptyBodyRequired": true,
+    "extraTopLevelH2Rejected": true,
+    "oldReportsReadOnly": true,
+    "generatedBlockHasNoTimestamp": true
+  },
+  "nA": {
+    "任务概览": null,
+    "分析与路线决策": null,
+    "实现路径": null,
+    "任务难点": "当前无未解决难点：",
+    "任务坑点": "未遇到影响结果的坑点：",
+    "外部约束与检查记录": "未命中：",
+    "关键曲折与试错记录": "一次收敛：",
+    "核心逻辑与实现方案": null,
+    "资产沉淀与方法论升级": "本任务无跨任务新增：",
+    "成果及使用示例": null,
+    "其它": "无"
+  }
+}

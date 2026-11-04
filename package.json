@@ -1,0 +1,28 @@
+{
+  "name": "web-reverse-skill-framework",
+  "private": true,
+  "version": "0.2.1",
+  "license": "Apache-2.0",
+  "description": "web-reverse：授权任务治理框架（授权登记 / 任务目录 / 验收分级闸门 / report 契约）",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "check": "node tools/qa/check-all.mjs --group=all",
+    "check:all": "node tools/qa/check-all.mjs --group=all",
+    "check:fast": "node tools/qa/check-all.mjs --group=fast",
+    "check:full": "node tools/qa/check-all.mjs --group=full",
+    "check:profile": "node tools/qa/check-all.mjs --group=full --jobs=1 --profile",
+    "check:skill-contract": "node tools/qa/check-skill-contract.mjs",
+    "check:report-schema": "node tools/qa/check-report-schema.mjs",
+    "check:algo-selfcheck": "node tools/qa/check-algo-selfcheck.mjs",
+    "check:utf8": "node tools/qa/check-utf8.mjs",
+    "check:auth-banners": "node tools/qa/check-authorization-banners.mjs",
+    "check:evals": "node tools/qa/check-evals.mjs",
+    "check:naming": "node tools/qa/check-naming.mjs",
+    "check:prompt-coverage": "node tools/qa/check-prompt-coverage.mjs",
+    "check:operating-contracts": "node tools/qa/check-operating-contracts.mjs",
+    "release:prep": "npm run check:report-schema -- --self-test && npm run check:fast -- --jobs=1",
+    "task:init": "node tools/task/task-init.mjs"
+  }
+}

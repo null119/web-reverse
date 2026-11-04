@@ -1,0 +1,793 @@
+{
+  "schemaVersion": 2,
+  "sourcePlan": ".optimization-evidence/round-1/04-final-plan.md",
+  "sourcePlanSha256": "bec5e43c1fe9d43d90c76714c40b64cf16a5dc4e6595fcf136fbc3ef28d60d13",
+  "baseReports": {
+    "all_applicable": "# 任务报告：fixture\n\n## 任务概览\n目标：验证固定报告结构；结果：fixture 通过；最近验证：schema self-test。\n\n## 分析与路线决策\n选择静态 fixture 路线，因为输入和 oracle 固定；放弃动态路线，避免引入无关状态。\n\n## 实现路径\n1. 读取 fixture（tools/qa/fixtures/report-schema-cases.json）。\n2. 调用 validator（tools/qa/check-report-schema.mjs）。\n\n## 任务难点\n当前未解决边界：仅验证结构，不验证外部服务。\n\n## 任务坑点\n错误：把代码围栏中的标题当章节；纠正：按真实 H2 解析；防复发：运行 heading_in_code_fence fixture。\n\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n## 关键曲折与试错记录\n一次收敛：独立字面 fixture 一次通过，未发生 pivot。\n\n## 核心逻辑与实现方案\n机制是 Markdown H2 解析；输入为 report 文本，输出为结构错误码；随机源为 fixture id。\n\n## 资产沉淀与方法论升级\n可复用规则：先做合同比对，再做正文检查；适用边界是 report-only 结构 QA。\n\n## 成果及使用示例\n产物：tools/qa/fixtures/report-schema-cases.json；命令：node tools/qa/check-report-schema.mjs --self-test；输出：OK。\n\n## 其它\n无",
+    "explicit_na": "# 任务报告：fixture-na\n\n## 任务概览\n目标：验证具体 N/A；结果：fixture 通过；最近验证：self-test exit 0。\n\n## 分析与路线决策\n选择固定文本路线；替代路线为动态采集，但本 fixture 无运行时。\n\n## 实现路径\n读取 tools/qa/fixtures/report-schema-cases.json → 运行 node tools/qa/check-report-schema.mjs --self-test。\n\n## 任务难点\n当前无未解决难点：这是结构 fixture，验收 oracle 已在仓库内。\n\n## 任务坑点\n未遇到影响结果的坑点：已检查标题、顺序、正文和临时目录路径。\n\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，均不在此文本 fixture 中。\n\n## 关键曲折与试错记录\n一次收敛：独立 base report 未修改标题即可通过。\n\n## 核心逻辑与实现方案\n实际机制是 ATX H2 解析；输入/输出和验证层级均在 fixture 中固定，无随机源。\n\n## 资产沉淀与方法论升级\n本任务无跨任务新增：仅验证本轮冻结合同，不新增方法论。\n\n## 成果及使用示例\n产物：report-schema-cases.json；命令：node tools/qa/check-report-schema.mjs --self-test；实测输出：OK。\n\n## 其它\n无",
+    "crlf_h3": "# 任务报告：fixture-crlf\r\n\r\n## 任务概览\r\n目标：验证 CRLF；结果：通过；最近验证：self-test。\r\n\r\n## 分析与路线决策\r\n选择文本 fixture；放弃会改变换行的格式化工具。\r\n\r\n## 实现路径\r\n读取 fixture → 执行 parser → 检查 H2 顺序。\r\n\r\n### 子节说明\r\nH3 只作为正文，不计入顶层章节。\r\n\r\n## 任务难点\r\n当前无未解决难点：换行差异已由 parser 覆盖。\r\n\r\n## 任务坑点\r\n未遇到影响结果的坑点：已检查 CRLF 和 H3。\r\n\r\n## 外部约束与检查记录\r\n未命中：已检查代码围栏和 HTML 注释。\r\n\r\n## 关键曲折与试错记录\r\n一次收敛：没有修改正文换行以外的 fixture 内容。\r\n\r\n## 核心逻辑与实现方案\r\n机制是换行归一化后的 H2 识别；输入/输出固定，无随机源。\r\n\r\n## 资产沉淀与方法论升级\r\n可复用规则：CRLF 不改变结构；适用边界是 Markdown 文本 fixture。\r\n\r\n## 成果及使用示例\r\n产物：fixture-crlf；命令：node tools/qa/check-report-schema.mjs --self-test；输出：OK。\r\n\r\n## 其它\r\n无",
+    "blocked_task": "# 任务报告：blocked\n\n## 任务概览\n目标：复现受限接口；结果：未完成，已确认登录边界；最近验证：只完成静态检查。\n\n## 分析与路线决策\n选择静态请求封装定位；放弃强行离线登录，因为授权凭据必须来自真实会话。\n\n## 实现路径\n1. 读取请求封装（run/request-wrapper.js）。\n2. 记录最后可执行离线步骤并停在授权边界。\n\n## 任务难点\n当前未解决边界：服务端授权交换未有真实会话输入，验收因此未完成。\n\n## 任务坑点\n错误：把缺少登录态误判为实现错误；纠正：核对登录边界；防复发：先检查外部授权依赖。\n\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前阻塞不是外部约束信号。\n\n## 关键曲折与试错记录\n被证伪：离线生成授权凭据；pivot 到明确用户协作边界，未伪造成功。\n\n## 核心逻辑与实现方案\n已确认机制边界是授权状态而非业务逻辑本身；输入为用户凭据，输出为服务端授权结果，当前未取得。\n\n## 资产沉淀与方法论升级\n可复用规则：先分离外部授权依赖与实现主体；适用边界是需要用户协作授权的任务。\n\n## 成果及使用示例\n产物：run/request-wrapper.js；命令：node run/request-wrapper.js --dry-run；输出：blocked at login。\n\n## 其它\n限制：没有服务端成功结果；后续需要用户在真实会话提供凭据。",
+    "legacy_six": "# 任务报告：legacy\n\n## 任务目标与结果\n旧报告。\n\n## 实现路径\n旧路径。\n\n## 分析与路线决策\n旧思路。\n\n## 难点与坑点\n旧内容。\n\n## 经验沉淀\n旧结论。\n\n## 交付物与复现\n旧产物。",
+    "multiline": "# 任务报告：fixture\n\n## 任务概览\n目标：验证固定报告结构；结果：fixture 通过；最近验证：schema self-test。\\n第二行证据：用于验证真正 EOF 替换。\n\n## 分析与路线决策\n选择静态 fixture 路线，因为输入和 oracle 固定；放弃动态路线，避免引入无关状态。\n\n## 实现路径\n1. 读取 fixture（tools/qa/fixtures/report-schema-cases.json）。\n2. 调用 validator（tools/qa/check-report-schema.mjs）。\n\n## 任务难点\n当前未解决边界：仅验证结构，不验证外部服务。\n\n## 任务坑点\n错误：把代码围栏中的标题当章节；纠正：按真实 H2 解析；防复发：运行 heading_in_code_fence fixture。\n\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n## 关键曲折与试错记录\n一次收敛：独立字面 fixture 一次通过，未发生 pivot。\n\n## 核心逻辑与实现方案\n机制是 Markdown H2 解析；输入为 report 文本，输出为结构错误码；随机源为 fixture id。\n\n## 资产沉淀与方法论升级\n可复用规则：先做合同比对，再做正文检查；适用边界是 report-only 结构 QA。\n\n## 成果及使用示例\n产物：tools/qa/fixtures/report-schema-cases.json；命令：node tools/qa/check-report-schema.mjs --self-test；输出：OK。\n\n## 其它\n无"
+  },
+  "cases": [
+    {
+      "id": "valid_all_applicable",
+      "kind": "valid",
+      "baseReport": "all_applicable",
+      "expectedCode": null
+    },
+    {
+      "id": "valid_explicit_na",
+      "kind": "valid",
+      "baseReport": "explicit_na",
+      "expectedCode": null
+    },
+    {
+      "id": "valid_crlf_h3",
+      "kind": "valid",
+      "baseReport": "crlf_h3",
+      "expectedCode": null
+    },
+    {
+      "id": "valid_blocked_task",
+      "kind": "valid",
+      "baseReport": "blocked_task",
+      "expectedCode": null
+    },
+    {
+      "id": "missing_section",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "外部约束与检查记录"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "wrong_order",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "swapSections",
+        "first": "分析与路线决策",
+        "second": "实现路径"
+      },
+      "expectedCode": "order"
+    },
+    {
+      "id": "duplicate_section",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "duplicateSection",
+        "title": "关键曲折与试错记录"
+      },
+      "expectedCode": "duplicate-section"
+    },
+    {
+      "id": "extra_h2",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "appendText",
+        "text": "\n## 额外附录\n\n补充内容。\n"
+      },
+      "expectedCode": "extra-section"
+    },
+    {
+      "id": "empty_section",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "emptySection",
+        "title": "任务坑点"
+      },
+      "expectedCode": "empty-section"
+    },
+    {
+      "id": "heading_in_code_fence",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "外部约束与检查记录",
+        "appendText": "\n```md\n## 外部约束与检查记录\n\n伪标题。\n```\n"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "heading_in_html_comment",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "外部约束与检查记录",
+        "appendText": "\n<!--\n## 外部约束与检查记录\n\n伪标题。\n-->\n"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "bare_na",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务难点",
+        "body": "无"
+      },
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "unfinished_skeleton",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "appendText",
+        "text": "\n骨架生成于 2026-01-01T00:00:00.000Z\n"
+      },
+      "expectedCode": "unfinished-skeleton"
+    },
+    {
+      "id": "legacy_six_as_v2",
+      "kind": "negative",
+      "baseReport": "legacy_six",
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "stale_generated_block",
+      "kind": "doc-mutation",
+      "expectedCode": "generated-doc-drift"
+    },
+    {
+      "id": "schema_title_changed",
+      "kind": "schema-mutation",
+      "expectedCode": "contract-mismatch"
+    },
+    {
+      "id": "stale_normative_reference",
+      "kind": "reference-mutation",
+      "expectedCode": "stale-report-reference"
+    },
+    {
+      "id": "forbidden_na_overview",
+      "kind": "negative",
+      "raw": "# 任务报告：fixture\n\n## 任务概览\nN/A - 尚未开始\n\n## 分析与路线决策\n选择静态 fixture 路线，因为输入和 oracle 固定；放弃动态路线，避免引入无关状态。\n\n## 实现路径\n1. 读取 fixture（tools/qa/fixtures/report-schema-cases.json）。\n2. 调用 validator（tools/qa/check-report-schema.mjs）。\n\n## 任务难点\n当前未解决边界：仅验证结构，不验证外部服务。\n\n## 任务坑点\n错误：把代码围栏中的标题当章节；纠正：按真实 H2 解析；防复发：运行 heading_in_code_fence fixture。\n\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n## 关键曲折与试错记录\n一次收敛：独立字面 fixture 一次通过，未发生 pivot。\n\n## 核心逻辑与实现方案\n机制是 Markdown H2 解析；输入为 report 文本，输出为结构错误码；随机源为 fixture id。\n\n## 资产沉淀与方法论升级\n可复用规则：先做合同比对，再做正文检查；适用边界是 report-only 结构 QA。\n\n## 成果及使用示例\n产物：tools/qa/fixtures/report-schema-cases.json；命令：node tools/qa/check-report-schema.mjs --self-test；输出：OK。\n\n## 其它\n无",
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "specific_na_missing_reason",
+      "kind": "negative",
+      "raw": "# 任务报告：fixture\n\n## 任务概览\n目标：验证固定报告结构；结果：fixture 通过；最近验证：schema self-test。\n\n## 分析与路线决策\n选择静态 fixture 路线，因为输入和 oracle 固定；放弃动态路线，避免引入无关状态。\n\n## 实现路径\n1. 读取 fixture（tools/qa/fixtures/report-schema-cases.json）。\n2. 调用 validator（tools/qa/check-report-schema.mjs）。\n\n## 任务难点\n当前无未解决难点：\n\n## 任务坑点\n错误：把代码围栏中的标题当章节；纠正：按真实 H2 解析；防复发：运行 heading_in_code_fence fixture。\n\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n## 关键曲折与试错记录\n一次收敛：独立字面 fixture 一次通过，未发生 pivot。\n\n## 核心逻辑与实现方案\n机制是 Markdown H2 解析；输入为 report 文本，输出为结构错误码；随机源为 fixture id。\n\n## 资产沉淀与方法论升级\n可复用规则：先做合同比对，再做正文检查；适用边界是 report-only 结构 QA。\n\n## 成果及使用示例\n产物：tools/qa/fixtures/report-schema-cases.json；命令：node tools/qa/check-report-schema.mjs --self-test；输出：OK。\n\n## 其它\n无",
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "empty_fence",
+      "kind": "negative",
+      "raw": "# 任务报告：fixture\n\n## 任务概览\n目标：验证固定报告结构；结果：fixture 通过；最近验证：schema self-test。\n\n## 分析与路线决策\n选择静态 fixture 路线，因为输入和 oracle 固定；放弃动态路线，避免引入无关状态。\n\n## 实现路径\n1. 读取 fixture（tools/qa/fixtures/report-schema-cases.json）。\n2. 调用 validator（tools/qa/check-report-schema.mjs）。\n\n## 任务难点\n当前未解决边界：仅验证结构，不验证外部服务。\n\n## 任务坑点\n```\n```\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n## 关键曲折与试错记录\n一次收敛：独立字面 fixture 一次通过，未发生 pivot。\n\n## 核心逻辑与实现方案\n机制是 Markdown H2 解析；输入为 report 文本，输出为结构错误码；随机源为 fixture id。\n\n## 资产沉淀与方法论升级\n可复用规则：先做合同比对，再做正文检查；适用边界是 report-only 结构 QA。\n\n## 成果及使用示例\n产物：tools/qa/fixtures/report-schema-cases.json；命令：node tools/qa/check-report-schema.mjs --self-test；输出：OK。\n\n## 其它\n无",
+      "expectedCode": "empty-section"
+    },
+    {
+      "id": "four_backtick_short_close",
+      "kind": "negative",
+      "raw": "# 任务报告：fixture\n\n## 任务概览\n目标：验证固定报告结构；结果：fixture 通过；最近验证：schema self-test。\n\n## 分析与路线决策\n选择静态 fixture 路线，因为输入和 oracle 固定；放弃动态路线，避免引入无关状态。\n\n## 实现路径\n1. 读取 fixture（tools/qa/fixtures/report-schema-cases.json）。\n2. 调用 validator（tools/qa/check-report-schema.mjs）。\n\n## 任务难点\n当前未解决边界：仅验证结构，不验证外部服务。\n\n## 任务坑点\n错误：把代码围栏中的标题当章节；纠正：按真实 H2 解析；防复发：运行 heading_in_code_fence fixture。\n\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n## 关键曲折与试错记录\n一次收敛：独立字面 fixture 一次通过，未发生 pivot。\n\n## 核心逻辑与实现方案\n机制是 Markdown H2 解析；输入为 report 文本，输出为结构错误码；随机源为 fixture id。\n\n## 资产沉淀与方法论升级\n可复用规则：先做合同比对，再做正文检查；适用边界是 report-only 结构 QA。\n\n## 成果及使用示例\n产物：tools/qa/fixtures/report-schema-cases.json；命令：node tools/qa/check-report-schema.mjs --self-test；输出：OK。\n\n\n````md\n```\n## 其它\n仍在四反引号围栏中的伪标题。\n````\n",
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "unclosed_comment",
+      "kind": "negative",
+      "raw": "# 任务报告：fixture\n\n## 任务概览\n目标：验证固定报告结构；结果：fixture 通过；最近验证：schema self-test。\n\n## 分析与路线决策\n选择静态 fixture 路线，因为输入和 oracle 固定；放弃动态路线，避免引入无关状态。\n\n## 实现路径\n1. 读取 fixture（tools/qa/fixtures/report-schema-cases.json）。\n2. 调用 validator（tools/qa/check-report-schema.mjs）。\n\n## 任务难点\n当前未解决边界：仅验证结构，不验证外部服务。\n\n## 任务坑点\n错误：把代码围栏中的标题当章节；纠正：按真实 H2 解析；防复发：运行 heading_in_code_fence fixture。\n\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n## 关键曲折与试错记录\n一次收敛：独立字面 fixture 一次通过，未发生 pivot。\n\n## 核心逻辑与实现方案\n机制是 Markdown H2 解析；输入为 report 文本，输出为结构错误码；随机源为 fixture id。\n\n## 资产沉淀与方法论升级\n可复用规则：先做合同比对，再做正文检查；适用边界是 report-only 结构 QA。\n\n## 成果及使用示例\n产物：tools/qa/fixtures/report-schema-cases.json；命令：node tools/qa/check-report-schema.mjs --self-test；输出：OK。\n\n\n<!--\n## 其它\n注释中的伪标题。\n",
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "tilde_fence",
+      "kind": "negative",
+      "raw": "# 任务报告：fixture\n\n## 任务概览\n目标：验证固定报告结构；结果：fixture 通过；最近验证：schema self-test。\n\n## 分析与路线决策\n选择静态 fixture 路线，因为输入和 oracle 固定；放弃动态路线，避免引入无关状态。\n\n## 实现路径\n1. 读取 fixture（tools/qa/fixtures/report-schema-cases.json）。\n2. 调用 validator（tools/qa/check-report-schema.mjs）。\n\n## 任务难点\n当前未解决边界：仅验证结构，不验证外部服务。\n\n## 任务坑点\n错误：把代码围栏中的标题当章节；纠正：按真实 H2 解析；防复发：运行 heading_in_code_fence fixture。\n\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n## 关键曲折与试错记录\n一次收敛：独立字面 fixture 一次通过，未发生 pivot。\n\n## 核心逻辑与实现方案\n机制是 Markdown H2 解析；输入为 report 文本，输出为结构错误码；随机源为 fixture id。\n\n## 资产沉淀与方法论升级\n可复用规则：先做合同比对，再做正文检查；适用边界是 report-only 结构 QA。\n\n## 成果及使用示例\n产物：tools/qa/fixtures/report-schema-cases.json；命令：node tools/qa/check-report-schema.mjs --self-test；输出：OK。\n\n\n~~~md\n## 其它\ntilde 中的伪标题。\n~~~~\n",
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "blockquote_list",
+      "kind": "negative",
+      "raw": "# 任务报告：fixture\n\n## 任务概览\n目标：验证固定报告结构；结果：fixture 通过；最近验证：schema self-test。\n\n## 分析与路线决策\n选择静态 fixture 路线，因为输入和 oracle 固定；放弃动态路线，避免引入无关状态。\n\n## 实现路径\n1. 读取 fixture（tools/qa/fixtures/report-schema-cases.json）。\n2. 调用 validator（tools/qa/check-report-schema.mjs）。\n\n## 任务难点\n当前未解决边界：仅验证结构，不验证外部服务。\n\n## 任务坑点\n错误：把代码围栏中的标题当章节；纠正：按真实 H2 解析；防复发：运行 heading_in_code_fence fixture。\n\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n## 关键曲折与试错记录\n一次收敛：独立字面 fixture 一次通过，未发生 pivot。\n\n## 核心逻辑与实现方案\n机制是 Markdown H2 解析；输入为 report 文本，输出为结构错误码；随机源为 fixture id。\n\n## 资产沉淀与方法论升级\n可复用规则：先做合同比对，再做正文检查；适用边界是 report-only 结构 QA。\n\n## 成果及使用示例\n产物：tools/qa/fixtures/report-schema-cases.json；命令：node tools/qa/check-report-schema.mjs --self-test；输出：OK。\n\n\n> ## 其它\n> 引用中的伪标题。\n- ## 其它\n  列表中的伪标题。\n",
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "unclosed_fence",
+      "kind": "negative",
+      "raw": "# 任务报告：fixture\n\n## 任务概览\n目标：验证固定报告结构；结果：fixture 通过；最近验证：schema self-test。\n\n## 分析与路线决策\n选择静态 fixture 路线，因为输入和 oracle 固定；放弃动态路线，避免引入无关状态。\n\n## 实现路径\n1. 读取 fixture（tools/qa/fixtures/report-schema-cases.json）。\n2. 调用 validator（tools/qa/check-report-schema.mjs）。\n\n## 任务难点\n当前未解决边界：仅验证结构，不验证外部服务。\n\n## 任务坑点\n错误：把代码围栏中的标题当章节；纠正：按真实 H2 解析；防复发：运行 heading_in_code_fence fixture。\n\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n## 关键曲折与试错记录\n一次收敛：独立字面 fixture 一次通过，未发生 pivot。\n\n## 核心逻辑与实现方案\n机制是 Markdown H2 解析；输入为 report 文本，输出为结构错误码；随机源为 fixture id。\n\n## 资产沉淀与方法论升级\n可复用规则：先做合同比对，再做正文检查；适用边界是 report-only 结构 QA。\n\n## 成果及使用示例\n产物：tools/qa/fixtures/report-schema-cases.json；命令：node tools/qa/check-report-schema.mjs --self-test；输出：OK。\n\n\n```md\n## 其它\n未闭合围栏中的伪标题。\n",
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "valid_atx_closing_sequence",
+      "kind": "valid",
+      "baseReport": "all_applicable",
+      "transform": "atx-closing-sequence",
+      "expectedCode": null
+    },
+    {
+      "id": "parser_list_fake_h2",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "其它",
+        "appendText": "\n- parent\n  ## 其它\n  fake list body"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "parser_ordered_fake_h2",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "其它",
+        "appendText": "\n1. parent\n   ## 其它\n   fake ordered body"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "parser_list_fence_then_real_h2",
+      "kind": "valid",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "insertBeforeSection",
+        "title": "关键曲折与试错记录",
+        "removeTitle": "外部约束与检查记录",
+        "text": "\n- ```md\n  ## fake\n  ```\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n"
+      },
+      "expectedCode": null
+    },
+    {
+      "id": "parser_raw_pre_fake_h2",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "其它",
+        "appendText": "\n<pre class=\"x\">\n## 其它\nfake raw body\n</pre>"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "parser_inline_pre_then_real_h2",
+      "kind": "valid",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "其它",
+        "appendText": "\nUse <pre> tag inline.\n## 其它\n限制：inline 标签不是 raw block。"
+      },
+      "expectedCode": null
+    },
+    {
+      "id": "parser_comment_inside_fence_then_real_h2",
+      "kind": "valid",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "insertBeforeSection",
+        "title": "关键曲折与试错记录",
+        "removeTitle": "外部约束与检查记录",
+        "text": "\n```md\n<!--\n```\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n"
+      },
+      "expectedCode": null
+    },
+    {
+      "id": "na_fullwidth_and_punctuation",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务概览",
+        "body": "Ｎ／Ａ。尚未开始"
+      },
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "na_placeholder_braces",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务难点",
+        "body": "当前无未解决难点：{依据}"
+      },
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "na_placeholder_bracket",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务坑点",
+        "body": "未遇到影响结果的坑点：[依据]"
+      },
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "na_placeholder_todo",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "关键曲折与试错记录",
+        "body": "一次收敛：TODO"
+      },
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "na_placeholder_waiting",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "资产沉淀与方法论升级",
+        "body": "本任务无跨任务新增：待补充"
+      },
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "section12_substantive_limit",
+      "kind": "valid",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "其它",
+        "body": "无法完成发布：外部服务不可用；后续需重试。"
+      },
+      "expectedCode": null
+    },
+    {
+      "id": "section12_na_rejected",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "其它",
+        "body": "N/A"
+      },
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "reviewer_c_renderer_oracle",
+      "kind": "renderer-oracle",
+      "expectedCode": null
+    },
+    {
+      "id": "reviewer_c_renderer_mutation",
+      "kind": "renderer-mutation",
+      "expectedCode": "contract-mismatch"
+    },
+    {
+      "id": "reviewer_c_purity_static_import",
+      "kind": "purity-mutation",
+      "snippet": "import \"./evil-side-effect.mjs\";",
+      "expectedCode": "contract-mismatch"
+    },
+    {
+      "id": "reviewer_c_purity_dynamic_import",
+      "kind": "purity-mutation",
+      "snippet": "import(\"./evil-side-effect.mjs\");",
+      "expectedCode": "contract-mismatch"
+    },
+    {
+      "id": "reviewer_c_purity_require",
+      "kind": "purity-mutation",
+      "snippet": "require(\"node:fs\");",
+      "expectedCode": "contract-mismatch"
+    },
+    {
+      "id": "reviewer_c_purity_node_builtin",
+      "kind": "purity-mutation",
+      "snippet": "import fs from \"fs\";",
+      "expectedCode": "contract-mismatch"
+    },
+    {
+      "id": "reviewer_c_purity_process",
+      "kind": "purity-mutation",
+      "snippet": "process.exit(0);",
+      "expectedCode": "contract-mismatch"
+    },
+    {
+      "id": "reviewer_c_purity_buffer",
+      "kind": "purity-mutation",
+      "snippet": "Buffer.from(\"x\");",
+      "expectedCode": "contract-mismatch"
+    },
+    {
+      "id": "reviewer_c_purity_clock",
+      "kind": "purity-mutation",
+      "snippet": "Date.now();",
+      "expectedCode": "contract-mismatch"
+    },
+    {
+      "id": "reviewer_c_task_init_device_aliases",
+      "kind": "task-init-alias",
+      "aliases": [
+        "NUL",
+        "CON",
+        "COM1",
+        "LPT1",
+        "NUL.txt",
+        "CON.log",
+        "COM1.md"
+      ],
+      "expectedCode": 1
+    },
+    {
+      "id": "reviewer_c_section_regex_eof",
+      "kind": "section-regex-eof",
+      "baseReport": "multiline",
+      "expectedCode": null
+    },
+    {
+      "id": "na_emphasis_forbidden_overview",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务概览",
+        "body": "**N/A**：尚未开始"
+      },
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "na_emphasis_reasonless_task_difficulty",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务难点",
+        "body": "**当前无未解决难点**"
+      },
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "na_placeholder_only_emphasis",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务难点",
+        "body": "当前无未解决难点：**依据**"
+      },
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "na_placeholder_only_range",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务难点",
+        "body": "当前无未解决难点：范围"
+      },
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "na_placeholder_only_checked",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务难点",
+        "body": "当前无未解决难点：已检查"
+      },
+      "expectedCode": "insufficient-evidence"
+    },
+    {
+      "id": "na_emphasized_valid",
+      "kind": "valid",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务难点",
+        "body": "**当前无未解决难点：已检查 fixture 解析器**"
+      },
+      "expectedCode": null
+    },
+    {
+      "id": "body_zero_width",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务坑点",
+        "body": "​"
+      },
+      "expectedCode": "empty-section"
+    },
+    {
+      "id": "body_nul",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务坑点",
+        "body": "\u0000"
+      },
+      "expectedCode": "empty-section"
+    },
+    {
+      "id": "body_cf",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务坑点",
+        "body": "‍"
+      },
+      "expectedCode": "empty-section"
+    },
+    {
+      "id": "body_cc",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务坑点",
+        "body": "\u000b"
+      },
+      "expectedCode": "empty-section"
+    },
+    {
+      "id": "body_thematic_break",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务坑点",
+        "body": "---"
+      },
+      "expectedCode": "empty-section"
+    },
+    {
+      "id": "body_marker_only",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务坑点",
+        "body": "-"
+      },
+      "expectedCode": "empty-section"
+    },
+    {
+      "id": "body_heading_marker",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "replaceBody",
+        "title": "任务坑点",
+        "body": "### 子节"
+      },
+      "expectedCode": "empty-section"
+    },
+    {
+      "id": "raw_html_div_fake_h2",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "其它",
+        "appendText": "\n<div>\n## 其它\n伪标题\n</div>"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "raw_html_script_fake_h2",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "其它",
+        "appendText": "\n<script>\n## 其它\n伪标题\n</script>"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "raw_html_style_fake_h2",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "其它",
+        "appendText": "\n<style>\n## 其它\n伪标题\n</style>"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "raw_html_pre_fake_h2",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "其它",
+        "appendText": "\n<pre>\n## 其它\n伪标题\n</pre>"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "raw_html_textarea_fake_h2",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "其它",
+        "appendText": "\n<textarea>\n## 其它\n伪标题\n</textarea>"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "raw_html_table_fake_h2",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "其它",
+        "appendText": "\n<table>\n## 其它\n伪标题\n</table>"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "raw_html_div_same_line",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "其它",
+        "appendText": "\n<DIV CLASS=\"x\">## 其它</DIV>"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "raw_html_script_same_line",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "其它",
+        "appendText": "\n<script>## 其它</script>"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "parser_inline_span_then_real_h2",
+      "kind": "valid",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "removeSection",
+        "title": "其它",
+        "appendText": "\nUse <span>inline</span> and <pre>mention</pre>.\n## 其它\n限制：inline tags are prose."
+      },
+      "expectedCode": null
+    },
+    {
+      "id": "parser_list_fence_top_level_close_rejected",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "insertBeforeSection",
+        "title": "关键曲折与试错记录",
+        "removeTitle": "外部约束与检查记录",
+        "text": "\n- ```md\n  ## fake\n```\n## 外部约束与检查记录\n仍在 list fence\n  ```\n"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "parser_quote_fence_top_level_close_rejected",
+      "kind": "negative",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "insertBeforeSection",
+        "title": "关键曲折与试错记录",
+        "removeTitle": "外部约束与检查记录",
+        "text": "\n> ```md\n> ## fake\n```\n## 外部约束与检查记录\n仍在 quote fence\n> ```\n"
+      },
+      "expectedCode": "missing-section"
+    },
+    {
+      "id": "parser_list_fence_safe_close",
+      "kind": "valid",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "insertBeforeSection",
+        "title": "关键曲折与试错记录",
+        "removeTitle": "外部约束与检查记录",
+        "text": "\n- ```md\n  ## fake\n  ```\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n"
+      },
+      "expectedCode": null
+    },
+    {
+      "id": "parser_quote_fence_safe_close",
+      "kind": "valid",
+      "baseReport": "all_applicable",
+      "mutation": {
+        "op": "insertBeforeSection",
+        "title": "关键曲折与试错记录",
+        "removeTitle": "外部约束与检查记录",
+        "text": "\n> ```md\n> ## fake\n> ```\n## 外部约束与检查记录\n未命中：已检查环境与输入信号，当前 fixture 不触发。\n\n"
+      },
+      "expectedCode": null
+    }
+  ],
+  "mutations": [
+    {
+      "id": "production_schema_drop_last_section",
+      "target": "schema",
+      "operation": "drop-last-section",
+      "expectedCode": "contract-mismatch"
+    },
+    {
+      "id": "production_schema_swap_2_3",
+      "target": "schema",
+      "operation": "swap-2-3",
+      "expectedCode": "contract-mismatch"
+    },
+    {
+      "id": "production_schema_duplicate_4",
+      "target": "schema",
+      "operation": "duplicate-4",
+      "expectedCode": "contract-mismatch"
+    },
+    {
+      "id": "real_report_swap_2_3",
+      "target": "report",
+      "operation": "swap-2-3",
+      "expectedCode": "order"
+    },
+    {
+      "id": "real_report_duplicate_8",
+      "target": "report",
+      "operation": "duplicate-8",
+      "expectedCode": "duplicate-section"
+    },
+    {
+      "id": "generated_block_title_changed",
+      "target": "doc",
+      "operation": "replace-title",
+      "expectedCode": "generated-doc-drift"
+    }
+  ],
+  "reviewerC": {
+    "sourceReport": ".optimization-evidence/round-1/20-post-review-c.md",
+    "requiredCounterexampleIds": [
+      "reviewer_c_renderer_oracle",
+      "reviewer_c_renderer_mutation",
+      "reviewer_c_purity_static_import",
+      "reviewer_c_purity_dynamic_import",
+      "reviewer_c_purity_require",
+      "reviewer_c_purity_node_builtin",
+      "reviewer_c_purity_process",
+      "reviewer_c_purity_buffer",
+      "reviewer_c_purity_clock",
+      "reviewer_c_task_init_device_aliases",
+      "reviewer_c_section_regex_eof",
+      "na_emphasis_forbidden_overview",
+      "na_emphasis_reasonless_task_difficulty",
+      "na_placeholder_only_emphasis",
+      "body_zero_width",
+      "body_nul",
+      "body_cf",
+      "body_cc",
+      "body_thematic_break",
+      "body_marker_only",
+      "body_heading_marker",
+      "raw_html_div_fake_h2",
+      "raw_html_script_fake_h2",
+      "raw_html_style_fake_h2",
+      "raw_html_pre_fake_h2",
+      "raw_html_textarea_fake_h2",
+      "raw_html_table_fake_h2",
+      "raw_html_div_same_line",
+      "raw_html_script_same_line",
+      "parser_list_fence_top_level_close_rejected",
+      "parser_quote_fence_top_level_close_rejected",
+      "parser_list_fence_safe_close",
+      "parser_quote_fence_safe_close",
+      "na_emphasized_valid"
+    ]
+  }
+}

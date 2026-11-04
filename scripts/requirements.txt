@@ -1,0 +1,8 @@
+# Python 依赖（按需安装，并非每个脚本都要全部）
+#   pip install -r scripts/requirements.txt
+#
+# 各脚本实际依赖：
+#   verify/verify-offline.py -> requests
+#   verify/verify-algo.py    -> 仅标准库
+
+requests          # verify-offline.py 发真实请求
